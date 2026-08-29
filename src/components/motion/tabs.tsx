@@ -80,9 +80,9 @@ export function Tabs({
 }
 
 const listClasses: Record<Variant, string> = {
-  pill: "inline-flex items-center gap-1 rounded-2xl bg-muted/80 p-1.5 border border-border/60",
-  underline: "inline-flex items-center gap-2 border-b border-border/80",
-  segment: "inline-flex items-center gap-0 rounded-xl bg-card p-1 border border-border/60",
+  pill: "inline-flex items-center gap-1 rounded-2xl bg-muted/80 p-1.5 border border-border/60 max-w-full overflow-x-auto scrollbar-none",
+  underline: "inline-flex items-center gap-2 border-b border-border/80 max-w-full overflow-x-auto scrollbar-none",
+  segment: "inline-flex items-center gap-0 rounded-xl bg-card p-1 border border-border/60 max-w-full overflow-x-auto scrollbar-none",
 };
 
 export function TabsList({ children, className }: { children: ReactNode; className?: string }) {

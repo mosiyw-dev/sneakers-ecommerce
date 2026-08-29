@@ -111,7 +111,7 @@ export default function RootLayout({
         <SmoothScrollProvider>
           <ThemeProvider defaultTheme="system">
             <Navbar />
-            <main className="flex-1 pb-16 md:pb-0">{children}</main>
+            <main className="flex-1 pb-16 md:pb-0 overflow-x-clip max-w-full w-full">{children}</main>
             <Footer />
 
             {/* Mobile Bottom Navigation */}

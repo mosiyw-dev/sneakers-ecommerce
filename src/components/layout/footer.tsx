@@ -1,3 +1,6 @@
+"use client";
+
+import * as React from "react";
 import Link from "next/link";
 import {
   Sparkles,
@@ -6,13 +9,83 @@ import {
   RotateCcw,
   Headphones,
   ArrowLeft,
+  Home,
+  Layers,
+  Search,
+  Heart,
+  ShoppingBag,
+  PackageCheck,
+  Moon,
+  Sun,
 } from "lucide-react";
 import { SITE_CONFIG, NAV_LINKS } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
+import { Dock, type DockItemData } from "@/components/motion/dock";
+import { useCartStore } from "@/stores/cart-store";
+import { useWishlistStore } from "@/stores/wishlist-store";
+import { useSearchStore } from "@/stores/search-store";
+import { useTheme } from "@/components/ui/theme-provider";
+import { useIsMounted } from "@/hooks/use-is-mounted";
 
 export function Footer() {
+  const isMounted = useIsMounted();
+  const { totalItems, openDrawer } = useCartStore();
+  const { items: wishlistItems } = useWishlistStore();
+  const { openSearch } = useSearchStore();
+  const { resolvedTheme, setTheme } = useTheme();
+
+  const cartCount = isMounted ? totalItems : 0;
+  const wishlistCount = isMounted ? wishlistItems.length : 0;
+
+  const dockItems: DockItemData[] = [
+    {
+      id: "dock-home",
+      label: "صفحه اصلی",
+      icon: Home,
+      href: "/",
+    },
+    {
+      id: "dock-catalog",
+      label: "کاتالوگ کتونی‌ها",
+      icon: Layers,
+      href: "/products",
+    },
+    {
+      id: "dock-search",
+      label: "جستجوی مدل",
+      icon: Search,
+      onClick: openSearch,
+    },
+    {
+      id: "dock-wishlist",
+      label: "علاقه‌مندی‌ها",
+      icon: Heart,
+      href: "/wishlist",
+      badge: wishlistCount,
+    },
+    {
+      id: "dock-cart",
+      label: "سبد خرید",
+      icon: ShoppingBag,
+      onClick: openDrawer,
+      badge: cartCount,
+    },
+    {
+      id: "dock-orders",
+      label: "پیگیری سفارش",
+      icon: PackageCheck,
+      href: "/cart",
+    },
+    {
+      id: "dock-theme",
+      label: isMounted && resolvedTheme === "dark" ? "حالت روشن" : "حالت تیره",
+      icon: isMounted && resolvedTheme === "dark" ? Sun : Moon,
+      onClick: () => setTheme(resolvedTheme === "dark" ? "light" : "dark"),
+    },
+  ];
+
   return (
-    <footer className="border-t border-border bg-card/60 text-card-foreground pb-safe">
+    <footer className="border-t border-border bg-card/60 text-card-foreground pb-28 sm:pb-safe overflow-hidden">
       {/* Top Features / Trust Strip */}
       <div className="border-b border-border/80 bg-muted/30">
         <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
@@ -60,9 +133,17 @@ export function Footer() {
         </div>
       </div>
 
+      {/* beUI Interactive Dock Showcase Section */}
+      <div className="py-8 border-b border-border/70 bg-gradient-to-b from-muted/10 to-muted/40 flex flex-col items-center justify-center gap-3 px-4">
+        <span className="text-[11px] font-black uppercase tracking-widest text-muted-foreground">
+          دسترسی سریع • JORDAN CLUB DOCK
+        </span>
+        <Dock items={dockItems} className="max-w-fit mx-auto" />
+      </div>
+
       {/* Main Footer Links */}
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12 text-right">
           {/* Brand Col */}
           <div className="md:col-span-5 space-y-4">
             <Link href="/" className="flex items-center gap-2">

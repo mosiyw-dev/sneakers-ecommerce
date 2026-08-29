@@ -121,6 +121,13 @@
   * {
     @apply border-border outline-ring/50;
     -webkit-tap-highlight-color: transparent;
+    box-sizing: border-box;
+  }
+  html,
+  body {
+    overflow-x: clip;
+    max-width: 100vw;
+    width: 100%;
   }
   body {
     @apply bg-background text-foreground;
