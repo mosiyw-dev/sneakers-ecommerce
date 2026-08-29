@@ -24,7 +24,8 @@ import {
 } from "@/lib/formatters";
 import { Button } from "@/components/ui/button";
 import { useIsMounted } from "@/hooks/use-is-mounted";
-import { ArrowLeft, ShoppingBag } from "lucide-react";
+import { ArrowLeft, ShoppingBag, ChevronDown } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const INITIAL_SHIPPING_ADDRESS: ShippingAddress = {
   firstName: "",
@@ -59,6 +60,7 @@ export default function CheckoutPage() {
   const { format, currency } = useCurrencyStore();
 
   const [currentStep, setCurrentStep] = React.useState<number>(1);
+  const [mobileSummaryOpen, setMobileSummaryOpen] = React.useState(false);
   const [formData, setFormData] = React.useState<CheckoutFormData>({
     shippingAddress: INITIAL_SHIPPING_ADDRESS,
     shippingOptionId: SHIPPING_OPTIONS[0].id,
@@ -176,14 +178,51 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10 text-right">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 space-y-6 sm:space-y-10 text-right pb-16">
+      {/* Mobile Top Expandable Order Summary Accordion */}
+      <div className="lg:hidden rounded-2xl border border-border bg-card overflow-hidden shadow-2xs">
+        <button
+          type="button"
+          onClick={() => setMobileSummaryOpen(!mobileSummaryOpen)}
+          className="w-full flex items-center justify-between p-3.5 text-xs font-bold text-foreground bg-muted/30"
+          aria-expanded={mobileSummaryOpen}
+        >
+          <div className="flex items-center gap-2">
+            <ShoppingBag className="h-4 w-4 text-primary" />
+            <span>مشاهده خلاصه پیش‌فاکتور ({summary.itemCount} کتونی)</span>
+          </div>
+
+          <div className="flex items-center gap-2 font-mono">
+            <span className="text-primary font-black">{format(summary.total)}</span>
+            <ChevronDown
+              className={cn(
+                "h-4 w-4 text-muted-foreground transition-transform duration-200",
+                mobileSummaryOpen && "rotate-180"
+              )}
+            />
+          </div>
+        </button>
+
+        {mobileSummaryOpen && (
+          <div className="p-4 border-t border-border bg-card">
+            <OrderSummary
+              items={items}
+              summary={summary}
+              appliedPromo={appliedPromo || undefined}
+              onApplyPromo={(promo) => applyPromoCode(promo)}
+              onRemovePromo={removePromoCode}
+            />
+          </div>
+        )}
+      </div>
+
       {/* Stepper */}
       <CheckoutSteps currentStep={currentStep} />
 
       {/* Main Form & Summary Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 items-start">
         {/* Step Forms */}
-        <div className="lg:col-span-7 rounded-3xl border border-border/80 bg-card p-6 sm:p-8 shadow-xs">
+        <div className="lg:col-span-7 rounded-3xl border border-border/80 bg-card p-4 sm:p-8 shadow-xs">
           {currentStep === 1 && (
             <ShippingStep
               initialAddress={formData.shippingAddress}
@@ -212,8 +251,8 @@ export default function CheckoutPage() {
           )}
         </div>
 
-        {/* Sticky Summary Sidebar */}
-        <div className="lg:col-span-5 sticky top-24">
+        {/* Desktop Sticky Summary Sidebar */}
+        <div className="hidden lg:block lg:col-span-5 sticky top-24">
           <OrderSummary
             items={items}
             summary={summary}

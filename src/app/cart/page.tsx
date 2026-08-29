@@ -65,6 +65,11 @@ export default function CartPage() {
     setPromoInput("");
   };
 
+  const handleRemove = (id: string, name: string) => {
+    removeItem(id);
+    toast.info("کتونی از سبد حذف شد", `${name} از سبد خرید برداشته شد.`);
+  };
+
   if (!isMounted) {
     return (
       <div className="max-w-7xl mx-auto px-4 py-20 text-center">
@@ -74,12 +79,12 @@ export default function CartPage() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10 text-right">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 space-y-6 sm:space-y-10 text-right pb-28 md:pb-10">
       {/* Header */}
-      <div className="border-b border-border pb-6">
+      <div className="border-b border-border pb-4 sm:pb-6">
         <div className="flex items-center gap-2">
-          <ShoppingBag className="h-6 w-6 text-primary" />
-          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-foreground">
+          <ShoppingBag className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
+          <h1 className="text-2xl sm:text-4xl font-black tracking-tight text-foreground">
             سبد خرید شما ({summary.itemCount} جفت)
           </h1>
         </div>
@@ -90,43 +95,43 @@ export default function CartPage() {
 
       {items.length === 0 ? (
         /* Empty Cart State */
-        <div className="flex min-h-[400px] flex-col items-center justify-center rounded-3xl border border-dashed border-border p-12 text-center">
+        <div className="flex min-h-[400px] flex-col items-center justify-center rounded-3xl border border-dashed border-border p-8 sm:p-12 text-center">
           <div className="flex h-20 w-20 items-center justify-center rounded-3xl bg-muted text-muted-foreground mb-4">
             <ShoppingBag className="h-10 w-10" />
           </div>
-          <h2 className="text-xl font-bold text-foreground">
+          <h2 className="text-lg sm:text-xl font-bold text-foreground">
             سبد خرید شما در حال حاضر خالی است
           </h2>
-          <p className="text-xs sm:text-sm text-muted-foreground max-w-sm mt-1 mb-8">
+          <p className="text-xs sm:text-sm text-muted-foreground max-w-sm mt-1 mb-6 sm:mb-8">
             جدیدترین کتونی‌های جردن ۱، جردن ۴ و مدل‌های لیمیتد ترویس اسکات را بررسی کنید.
           </p>
           <Link href="/products">
-            <Button size="lg" className="gap-2 rounded-2xl text-sm font-bold shadow-md">
+            <Button size="lg" className="gap-2 rounded-2xl text-xs sm:text-sm font-bold shadow-md">
               مشاهده کاتالوگ جردن <ArrowLeft className="h-4 w-4" />
             </Button>
           </Link>
         </div>
       ) : (
         /* Filled Cart Layout */
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12">
           {/* Main Item Stream */}
-          <div className="lg:col-span-8 space-y-6">
+          <div className="lg:col-span-8 space-y-4 sm:space-y-6">
             {/* Free shipping progress bar */}
-            <div className="rounded-2xl bg-muted/40 border border-border/80 p-4 space-y-2">
+            <div className="rounded-2xl bg-muted/40 border border-border/80 p-3.5 sm:p-4 space-y-2">
               <div className="flex items-center justify-between text-xs">
                 <span className="font-semibold text-foreground flex items-center gap-1.5">
-                  <Truck className="h-4 w-4 text-primary" />
+                  <Truck className="h-4 w-4 text-primary shrink-0" />
                   {summary.remainingForFreeShipping > 0 ? (
-                    <>
+                    <span>
                       فقط{" "}
-                      <strong className="text-primary font-mono">
+                      <strong className="text-primary font-mono font-bold">
                         {format(summary.remainingForFreeShipping)}
                       </strong>{" "}
-                      دیگر تا ارسال کاملاً رایگان سراسر کشور
-                    </>
+                      دیگر تا ارسال کاملاً رایگان
+                    </span>
                   ) : (
                     <span className="text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1">
-                      <Sparkles className="h-3.5 w-3.5" /> ارسال این سفارش برای شما ۱۰۰٪ رایگان است!
+                      <Sparkles className="h-3.5 w-3.5" /> ارسال این سفارش ۱۰۰٪ رایگان است!
                     </span>
                   )}
                 </span>
@@ -142,14 +147,14 @@ export default function CartPage() {
               </div>
             </div>
 
-            {/* Cart Items List */}
-            <div className="rounded-3xl border border-border/80 bg-card divide-y divide-border/60 overflow-hidden shadow-xs">
+            {/* Mobile / Desktop Cart Items List */}
+            <div className="space-y-3 sm:space-y-4">
               {items.map((item) => (
                 <div
                   key={item.id}
-                  className="p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+                  className="p-3.5 sm:p-5 rounded-3xl border border-border/80 bg-card shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
                 >
-                  <div className="flex items-center gap-4 min-w-0">
+                  <div className="flex items-center gap-3 sm:gap-4 min-w-0 w-full sm:w-auto">
                     <div className="relative h-20 w-20 sm:h-24 sm:w-24 shrink-0 overflow-hidden rounded-2xl bg-muted border border-border">
                       <Image
                         src={
@@ -165,52 +170,63 @@ export default function CartPage() {
                       />
                     </div>
 
-                    <div className="space-y-1 min-w-0">
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                    <div className="space-y-1 min-w-0 flex-1">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground block">
                         {item.product.brand}
                       </span>
                       <Link
                         href={`/products/${item.product.slug}`}
-                        className="text-xs sm:text-sm font-bold text-foreground hover:text-primary transition-colors block truncate"
+                        className="text-xs sm:text-sm font-black text-foreground hover:text-primary transition-colors block truncate"
                       >
                         {item.product.name}
                       </Link>
-                      <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
+                      <div className="flex flex-wrap items-center gap-2 text-[11px] text-muted-foreground">
                         {item.selectedSize && (
-                          <span>سایز: <strong className="font-mono">EU {item.selectedSize}</strong></span>
+                          <span className="bg-muted px-2 py-0.5 rounded-md">
+                            سایز: <strong className="font-mono text-foreground font-bold">EU {item.selectedSize}</strong>
+                          </span>
                         )}
                         {item.selectedColor && (
-                          <span>رنگ: <strong>{item.selectedColor.name}</strong></span>
+                          <span className="bg-muted px-2 py-0.5 rounded-md">
+                            رنگ: <strong className="text-foreground">{item.selectedColor.name}</strong>
+                          </span>
                         )}
                       </div>
-                      <span className="text-xs font-bold text-foreground font-mono block sm:hidden">
-                        {format(item.price)}
-                      </span>
+                      <div className="flex items-baseline gap-2 pt-0.5">
+                        <span className="text-xs sm:text-sm font-black text-foreground font-mono">
+                          {format(item.price)}
+                        </span>
+                        {item.quantity > 1 && (
+                          <span className="text-[10px] text-muted-foreground font-mono">
+                            (مجموع: {format(item.price * item.quantity)})
+                          </span>
+                        )}
+                      </div>
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between sm:justify-end gap-6 w-full sm:w-auto pt-3 sm:pt-0 border-t sm:border-t-0 border-border/40">
-                    <QuantityStepper
-                      quantity={item.quantity}
-                      maxStock={item.product.stock}
-                      onChange={(q) => updateQuantity(item.id, q)}
-                      size="default"
-                    />
+                  {/* Quantity Stepper & Remove CTA */}
+                  <div className="flex items-center justify-between sm:justify-end gap-4 w-full sm:w-auto pt-2 sm:pt-0 border-t sm:border-t-0 border-border/40">
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-muted-foreground sm:hidden">تعداد:</span>
+                      <QuantityStepper
+                        quantity={item.quantity}
+                        maxStock={item.product.stock}
+                        onChange={(q) => updateQuantity(item.id, q)}
+                        size="default"
+                      />
+                    </div>
 
-                    <div className="text-left font-mono">
-                      <span className="text-sm sm:text-base font-bold text-foreground block">
+                    <div className="hidden sm:block text-left font-mono">
+                      <span className="text-sm sm:text-base font-black text-foreground block">
                         {format(item.price * item.quantity)}
                       </span>
-                      {item.quantity > 1 && (
-                        <span className="text-[11px] text-muted-foreground">
-                          هر جفت {format(item.price)}
-                        </span>
-                      )}
                     </div>
 
                     <button
-                      onClick={() => removeItem(item.id)}
-                      className="p-2 text-muted-foreground hover:text-destructive transition-colors rounded-lg"
+                      type="button"
+                      onClick={() => handleRemove(item.id, item.product.name)}
+                      className="p-2 text-muted-foreground hover:text-destructive active:scale-90 transition-all rounded-xl touch-target"
                       aria-label="حذف کتونی"
                     >
                       <Trash2 className="h-4 w-4" />
@@ -221,17 +237,17 @@ export default function CartPage() {
             </div>
 
             {/* Back to Catalog */}
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between pt-2">
               <Link href="/products">
                 <Button variant="ghost" size="sm" className="gap-2 text-xs font-semibold">
-                  <ArrowRight className="h-4 w-4" /> ادامه خرید و انتخاب سایر مدل‌ها
+                  <ArrowRight className="h-4 w-4" /> ادامه خرید و مشاهده کاتالوگ
                 </Button>
               </Link>
             </div>
           </div>
 
-          {/* Right Summary Sticky Sidebar */}
-          <div className="lg:col-span-4 space-y-6">
+          {/* Desktop Summary Sidebar */}
+          <div className="hidden lg:block lg:col-span-4 space-y-6">
             <div className="rounded-3xl border border-border/80 bg-card p-6 space-y-6 sticky top-24 shadow-sm">
               <h3 className="text-base font-bold text-foreground border-b border-border pb-3">
                 صورت‌حساب نهایی سبد
@@ -334,6 +350,34 @@ export default function CartPage() {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Mobile Sticky Checkout Action Bar */}
+      {items.length > 0 && (
+        <div
+          className="fixed inset-x-0 bottom-0 z-45 lg:hidden border-t border-border/80 bg-background/95 p-3.5 backdrop-blur-xl shadow-2xl text-right"
+          style={{
+            paddingBottom: "max(0.75rem, env(safe-area-inset-bottom, 0.75rem))",
+          }}
+        >
+          <div className="flex items-center justify-between gap-3 max-w-md mx-auto">
+            <div className="flex flex-col">
+              <span className="text-[10px] text-muted-foreground font-medium">مبلغ قابل پرداخت:</span>
+              <span className="text-sm font-black text-primary font-mono">
+                {format(summary.total)}
+              </span>
+            </div>
+
+            <Link href="/checkout" className="flex-1 max-w-[200px]">
+              <Button
+                size="sm"
+                className="w-full h-11 gap-1.5 rounded-2xl text-xs font-black shadow-lg active:scale-95 touch-target"
+              >
+                ثبت سفارش و تسویه <ArrowLeft className="h-4 w-4" />
+              </Button>
+            </Link>
           </div>
         </div>
       )}

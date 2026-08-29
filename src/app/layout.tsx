@@ -4,6 +4,7 @@ import { Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import { Navbar } from "@/components/layout/navbar";
+import { MobileBottomNav } from "@/components/layout/mobile-bottom-nav";
 import { CartDrawer } from "@/components/layout/cart-drawer";
 import { SearchCommand } from "@/components/layout/search-command";
 import { QuickViewModal } from "@/components/layout/quick-view-modal";
@@ -110,8 +111,11 @@ export default function RootLayout({
         <SmoothScrollProvider>
           <ThemeProvider defaultTheme="system">
             <Navbar />
-            <main className="flex-1">{children}</main>
+            <main className="flex-1 pb-16 md:pb-0">{children}</main>
             <Footer />
+
+            {/* Mobile Bottom Navigation */}
+            <MobileBottomNav />
 
             {/* Global Client Portals & Drawers */}
             <CartDrawer />

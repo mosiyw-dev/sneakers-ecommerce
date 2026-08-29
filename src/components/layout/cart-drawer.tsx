@@ -85,7 +85,7 @@ export function CartDrawer() {
   };
 
   return (
-    <Sheet open={isDrawerOpen} onOpenChange={(open) => !open && closeDrawer()} side="left">
+    <Sheet open={isDrawerOpen} onOpenChange={(open) => !open && closeDrawer()} side="right">
       <SheetHeader onClose={closeDrawer}>
         <div className="flex items-center gap-2">
           <ShoppingBag className="h-5 w-5 text-primary" />
@@ -218,7 +218,12 @@ export function CartDrawer() {
 
         {/* Footer Breakdown & Checkout CTA */}
         {items.length > 0 && (
-          <div className="border-t border-border bg-card p-4 sm:p-6 space-y-4">
+          <div
+            className="border-t border-border bg-card p-4 sm:p-6 space-y-4"
+            style={{
+              paddingBottom: "max(1.25rem, env(safe-area-inset-bottom, 1.25rem))",
+            }}
+          >
             {/* Promo Code Input */}
             {appliedPromo ? (
               <div className="flex items-center justify-between rounded-xl bg-emerald-500/10 border border-emerald-500/20 px-3 py-2 text-xs text-emerald-700 dark:text-emerald-400">

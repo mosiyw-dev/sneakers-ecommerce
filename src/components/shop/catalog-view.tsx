@@ -385,7 +385,11 @@ export function CatalogView() {
             onResetFilters={handleResetFilters}
           />
 
-          <ProductGrid products={paginatedProducts} viewMode={viewMode} />
+          <ProductGrid
+            products={paginatedProducts}
+            viewMode={viewMode}
+            onResetFilters={handleResetFilters}
+          />
 
           {/* Numbered Pagination (RTL Direction) */}
           {totalPages > 1 && (

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Sparkles, X, ArrowLeft, Flame } from "lucide-react";
+import { Sparkles, X, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { TextShimmer } from "@/components/motion/text-shimmer";
 

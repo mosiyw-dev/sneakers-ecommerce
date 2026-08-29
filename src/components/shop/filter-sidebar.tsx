@@ -21,14 +21,14 @@ interface FilterSidebarProps {
 }
 
 const COLOR_FILTERS = [
-  { name: "قرمز و سفید شیکاگو (Varsity Red)", hex: "#CE1141" },
-  { name: "مشکی مات خالص", hex: "#18181B" },
-  { name: "سفید و مشکی میلیتاری", hex: "#E5E7EB" },
-  { name: "موکا قهوه‌ای و کرم (Reverse Mocha)", hex: "#78350F" },
-  { name: "آبی دانشگاهی و سفید (UNC Blue)", hex: "#60A5FA" },
-  { name: "مشکی و طلایی گرتیتود", hex: "#D4AF37" },
-  { name: "آبی فیروزه‌ای کاکتوس جک", hex: "#38BDF8" },
-  { name: "خاکستری دودی و سفید (Smoke Grey)", hex: "#9CA3AF" },
+  { name: "قرمز و سفید شیکاگو (Varsity Red)", hex: "#CE1141", label: "شیکاگو" },
+  { name: "مشکی مات خالص", hex: "#18181B", label: "مشکی" },
+  { name: "سفید و مشکی میلیتاری", hex: "#E5E7EB", label: "سفید" },
+  { name: "موکا قهوه‌ای و کرم (Reverse Mocha)", hex: "#78350F", label: "موکا" },
+  { name: "آبی دانشگاهی و سفید (UNC Blue)", hex: "#60A5FA", label: "آبی UNC" },
+  { name: "مشکی و طلایی گرتیتود", hex: "#D4AF37", label: "طلایی" },
+  { name: "آبی فیروزه‌ای کاکتوس جک", hex: "#38BDF8", label: "کاکتوس" },
+  { name: "خاکستری دودی و سفید (Smoke Grey)", hex: "#9CA3AF", label: "دودی" },
 ];
 
 const SIZE_FILTERS = ["39", "40", "41", "42", "42.5", "43", "44", "44.5", "45"];
@@ -89,8 +89,8 @@ export function FilterSidebar({
 
   return (
     <aside className="space-y-6 text-right" aria-label="فیلترهای کاتالوگ">
-      {/* Header */}
-      <div className="flex items-center justify-between border-b border-border pb-4">
+      {/* Desktop Header */}
+      <div className="hidden md:flex items-center justify-between border-b border-border pb-4">
         <h3 className="text-sm font-black uppercase tracking-wider text-foreground">
           فیلترهای پیشرفته
         </h3>
@@ -108,15 +108,15 @@ export function FilterSidebar({
       <div className="space-y-3">
         <h4 className="text-xs font-bold text-foreground">مدل و سری جردن</h4>
         <div className="space-y-1.5">
-          <label className="flex items-center justify-between text-xs cursor-pointer text-muted-foreground hover:text-foreground">
-            <span className="flex items-center gap-2">
+          <label className="flex items-center justify-between text-xs cursor-pointer text-muted-foreground hover:text-foreground py-1 touch-target">
+            <span className="flex items-center gap-2.5">
               <input
                 type="checkbox"
                 checked={filters.categories.includes("all")}
                 onChange={() => handleCategoryToggle("all")}
-                className="rounded border-input text-primary focus:ring-primary h-3.5 w-3.5"
+                className="rounded border-input text-primary focus:ring-primary h-4 w-4"
               />
-              <span>همه کتونی‌ها</span>
+              <span className="font-semibold">همه کتونی‌ها</span>
             </span>
           </label>
 
@@ -125,18 +125,18 @@ export function FilterSidebar({
             return (
               <label
                 key={cat.id}
-                className="flex items-center justify-between text-xs cursor-pointer text-muted-foreground hover:text-foreground"
+                className="flex items-center justify-between text-xs cursor-pointer text-muted-foreground hover:text-foreground py-1 touch-target"
               >
-                <span className="flex items-center gap-2">
+                <span className="flex items-center gap-2.5">
                   <input
                     type="checkbox"
                     checked={isChecked}
                     onChange={() => handleCategoryToggle(cat.slug)}
-                    className="rounded border-input text-primary focus:ring-primary h-3.5 w-3.5"
+                    className="rounded border-input text-primary focus:ring-primary h-4 w-4"
                   />
-                  <span>{cat.name}</span>
+                  <span className={cn(isChecked && "font-bold text-foreground")}>{cat.name}</span>
                 </span>
-                <span className="text-[10px] text-muted-foreground/80 font-mono">
+                <span className="text-[10px] text-muted-foreground font-mono">
                   ({cat.itemCount})
                 </span>
               </label>
@@ -163,7 +163,7 @@ export function FilterSidebar({
               page: 1,
             })
           }
-          className="py-2"
+          className="py-3"
         />
 
         <div className="flex items-center justify-between text-xs text-muted-foreground font-mono">
@@ -175,7 +175,7 @@ export function FilterSidebar({
       {/* Sneaker Size (EU) */}
       <div className="space-y-3 border-t border-border/60 pt-4">
         <h4 className="text-xs font-bold text-foreground">سایز کتونی (EU)</h4>
-        <div className="grid grid-cols-3 gap-1.5 font-mono">
+        <div className="grid grid-cols-3 gap-2 font-mono">
           {SIZE_FILTERS.map((size) => {
             const isSelected = filters.sizes.includes(size);
             return (
@@ -184,13 +184,13 @@ export function FilterSidebar({
                 type="button"
                 onClick={() => handleSizeToggle(size)}
                 className={cn(
-                  "rounded-lg border py-1.5 text-xs font-semibold transition-all",
+                  "h-11 rounded-xl border text-xs font-semibold transition-all touch-target active:scale-95 flex items-center justify-center",
                   isSelected
-                    ? "border-primary bg-primary text-primary-foreground shadow-xs font-bold"
+                    ? "border-primary bg-primary text-primary-foreground shadow-xs font-black"
                     : "border-border/80 bg-background text-foreground hover:bg-muted"
                 )}
               >
-                {size}
+                EU {size}
               </button>
             );
           })}
@@ -200,7 +200,7 @@ export function FilterSidebar({
       {/* Color Swatches */}
       <div className="space-y-3 border-t border-border/60 pt-4">
         <h4 className="text-xs font-bold text-foreground">ترکیب رنگ</h4>
-        <div className="flex flex-wrap gap-2">
+        <div className="grid grid-cols-2 gap-2">
           {COLOR_FILTERS.map((color) => {
             const isSelected = filters.colors.includes(color.name);
             return (
@@ -209,24 +209,30 @@ export function FilterSidebar({
                 type="button"
                 onClick={() => handleColorToggle(color.name)}
                 className={cn(
-                  "relative h-6 w-6 rounded-full border-2 transition-all p-0.5 flex items-center justify-center",
+                  "flex items-center gap-2.5 p-2 rounded-xl border transition-all text-right touch-target active:scale-95",
                   isSelected
-                    ? "border-primary ring-2 ring-primary/20 scale-110"
-                    : "border-border hover:scale-105"
+                    ? "border-primary bg-primary/10 ring-1 ring-primary/30"
+                    : "border-border/70 bg-card hover:bg-muted"
                 )}
-                style={{ backgroundColor: color.hex }}
-                title={color.name}
               >
-                {isSelected && (
-                  <Check
-                    className={cn(
-                      "h-3 w-3",
-                      color.hex === "#FFFFFF" || color.hex === "#E5E7EB" || color.hex === "#F3F4F6"
-                        ? "text-black"
-                        : "text-white"
-                    )}
-                  />
-                )}
+                <div
+                  className="relative h-6 w-6 rounded-full border border-black/10 shrink-0 flex items-center justify-center"
+                  style={{ backgroundColor: color.hex }}
+                >
+                  {isSelected && (
+                    <Check
+                      className={cn(
+                        "h-3 w-3",
+                        color.hex === "#FFFFFF" || color.hex === "#E5E7EB" || color.hex === "#F3F4F6"
+                          ? "text-black"
+                          : "text-white"
+                      )}
+                    />
+                  )}
+                </div>
+                <span className="text-[11px] font-bold text-foreground truncate">
+                  {color.label}
+                </span>
               </button>
             );
           })}
@@ -242,15 +248,15 @@ export function FilterSidebar({
             return (
               <label
                 key={brand}
-                className="flex items-center gap-2 text-xs cursor-pointer text-muted-foreground hover:text-foreground"
+                className="flex items-center gap-2.5 text-xs cursor-pointer text-muted-foreground hover:text-foreground py-1 touch-target"
               >
                 <input
                   type="checkbox"
                   checked={isChecked}
                   onChange={() => handleBrandToggle(brand)}
-                  className="rounded border-input text-primary focus:ring-primary h-3.5 w-3.5"
+                  className="rounded border-input text-primary focus:ring-primary h-4 w-4"
                 />
-                <span>{brand}</span>
+                <span className={cn(isChecked && "font-bold text-foreground")}>{brand}</span>
               </label>
             );
           })}
@@ -273,14 +279,14 @@ export function FilterSidebar({
                 })
               }
               className={cn(
-                "flex w-full items-center justify-between rounded-lg px-2 py-1 text-xs transition-colors",
+                "flex w-full items-center justify-between rounded-xl px-3 py-2 text-xs transition-colors touch-target",
                 filters.minRating === star
                   ? "bg-primary/10 text-primary font-bold"
                   : "text-muted-foreground hover:bg-muted hover:text-foreground"
               )}
             >
-              <div className="flex items-center gap-1">
-                <Star className="h-3.5 w-3.5 fill-amber-500 text-amber-500" />
+              <div className="flex items-center gap-1.5">
+                <Star className="h-4 w-4 fill-amber-500 text-amber-500" />
                 <span>{star} ستاره به بالا</span>
               </div>
             </button>
@@ -292,7 +298,7 @@ export function FilterSidebar({
       <div className="space-y-3 border-t border-border/60 pt-4">
         <h4 className="text-xs font-bold text-foreground">وضعیت موجودی</h4>
         <div className="space-y-2">
-          <label className="flex items-center justify-between text-xs cursor-pointer">
+          <label className="flex items-center justify-between text-xs cursor-pointer py-1.5 touch-target">
             <span className="text-muted-foreground">فقط کتونی‌های موجود در انبار</span>
             <input
               type="checkbox"
@@ -308,7 +314,7 @@ export function FilterSidebar({
             />
           </label>
 
-          <label className="flex items-center justify-between text-xs cursor-pointer">
+          <label className="flex items-center justify-between text-xs cursor-pointer py-1.5 touch-target">
             <span className="text-muted-foreground">فقط محصولات دارای تخفیف</span>
             <input
               type="checkbox"

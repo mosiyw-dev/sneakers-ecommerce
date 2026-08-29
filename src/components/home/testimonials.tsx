@@ -4,7 +4,6 @@ import Image from "next/image";
 import { Star, ShieldCheck, Quote } from "lucide-react";
 import { TiltCard } from "@/components/motion/tilt-card";
 import { AnimatedBadge } from "@/components/motion/animated-badge";
-import { TextShimmer } from "@/components/motion/text-shimmer";
 
 const TESTIMONIALS = [
   {

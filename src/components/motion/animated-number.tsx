@@ -30,8 +30,8 @@ export function AnimatedNumber({
     if (startOnView && !inView) return;
     if (reduce) {
       fromRef.current = value;
-      setDisplay(value);
-      return;
+      const t = setTimeout(() => setDisplay(value), 0);
+      return () => clearTimeout(t);
     }
     const controls = animate(fromRef.current, value, {
       duration,

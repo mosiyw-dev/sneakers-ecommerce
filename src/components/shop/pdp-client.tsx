@@ -27,7 +27,6 @@ import { ReviewSection } from "./review-section";
 import { StickyMobileBuyBar } from "./sticky-mobile-buy-bar";
 import { ProductGrid } from "./product-grid";
 import { BouncyAccordion } from "@/components/motion/bouncy-accordion";
-import { AnimatedBadge } from "@/components/motion/animated-badge";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useCartStore } from "@/stores/cart-store";
@@ -114,7 +113,7 @@ export function PdpClient({ product, relatedProducts }: PdpClientProps) {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-16 text-right">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 pb-28 md:pb-8 space-y-12 sm:space-y-16 text-right">
       {/* Breadcrumb Navigation */}
       <nav className="flex items-center gap-2 text-xs text-muted-foreground">
         <Link href="/" className="hover:text-foreground transition-colors">

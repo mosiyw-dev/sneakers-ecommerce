@@ -42,7 +42,10 @@ export function NumberTicker({
   const [armed, setArmed] = useState(!startOnView);
 
   useEffect(() => {
-    if (startOnView && inView) setArmed(true);
+    if (startOnView && inView) {
+      const t = setTimeout(() => setArmed(true), 0);
+      return () => clearTimeout(t);
+    }
   }, [startOnView, inView]);
 
   const text = useMemo(() => {

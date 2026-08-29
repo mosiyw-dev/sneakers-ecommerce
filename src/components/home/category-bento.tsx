@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, Sparkles, Layers, Flame, Trophy } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { CATEGORIES } from "@/data/categories";
 import { TiltCard } from "@/components/motion/tilt-card";
 import { AnimatedBadge } from "@/components/motion/animated-badge";

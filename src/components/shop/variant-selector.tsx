@@ -4,7 +4,7 @@ import * as React from "react";
 import { ProductColor } from "@/types";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Check, HelpCircle, Flame } from "lucide-react";
+import { Check, HelpCircle, Flame, ShieldCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface VariantSelectorProps {
@@ -31,20 +31,20 @@ export function VariantSelector({
   const [sizeGuideOpen, setSizeGuideOpen] = React.useState(false);
 
   return (
-    <div className="space-y-6 text-right">
+    <div className="space-y-5 text-right">
       {/* Color Selection */}
       {colors && colors.length > 0 && (
         <div className="space-y-2.5">
           <div className="flex items-center justify-between text-xs">
             <span className="font-semibold text-foreground">
-              انتخاب ترکیب رنگ:{" "}
+              ترکیب رنگ:{" "}
               <strong className="text-primary font-bold">
                 {selectedColor?.name || colors[0].name}
               </strong>
             </span>
           </div>
 
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-2.5">
             {colors.map((color) => {
               const isSelected = selectedColor?.name === color.name;
               return (
@@ -53,25 +53,30 @@ export function VariantSelector({
                   type="button"
                   onClick={() => onColorChange(color)}
                   className={cn(
-                    "relative flex h-8 w-8 items-center justify-center rounded-full border-2 transition-all p-0.5",
+                    "flex items-center gap-2 px-3 py-1.5 rounded-xl border-2 transition-all touch-target active:scale-95 text-right",
                     isSelected
-                      ? "border-primary ring-2 ring-primary/20 scale-110"
-                      : "border-border/80 hover:scale-105"
+                      ? "border-primary bg-primary/10 ring-1 ring-primary/30 font-bold"
+                      : "border-border/70 bg-card hover:bg-muted"
                   )}
-                  style={{ backgroundColor: color.hex }}
                   title={color.name}
                   aria-label={color.name}
                 >
-                  {isSelected && (
-                    <Check
-                      className={cn(
-                        "h-4 w-4",
-                        color.hex === "#FFFFFF" || color.hex === "#E5E7EB" || color.hex === "#F3F4F6"
-                          ? "text-black"
-                          : "text-white"
-                      )}
-                    />
-                  )}
+                  <div
+                    className="relative flex h-5 w-5 items-center justify-center rounded-full border border-black/15 shrink-0"
+                    style={{ backgroundColor: color.hex }}
+                  >
+                    {isSelected && (
+                      <Check
+                        className={cn(
+                          "h-3 w-3",
+                          color.hex === "#FFFFFF" || color.hex === "#E5E7EB" || color.hex === "#F3F4F6"
+                            ? "text-black"
+                            : "text-white"
+                        )}
+                      />
+                    )}
+                  </div>
+                  <span className="text-xs font-semibold text-foreground">{color.name}</span>
                 </button>
               );
             })}
@@ -84,23 +89,23 @@ export function VariantSelector({
         <div className="space-y-2.5">
           <div className="flex items-center justify-between text-xs">
             <span className="font-semibold text-foreground">
-              سایز کتونی (استاندارد اروپا - EU):{" "}
+              سایز پا (استاندارد اروپا - EU):{" "}
               <strong className="text-primary font-bold font-mono">
-                {selectedSize || sizes[0]}
+                {selectedSize ? `EU ${selectedSize}` : "یک سایز انتخاب کنید"}
               </strong>
             </span>
 
             <button
               type="button"
               onClick={() => setSizeGuideOpen(true)}
-              className="inline-flex items-center gap-1 text-[11px] font-semibold text-primary hover:underline"
+              className="inline-flex items-center gap-1 text-[11px] font-bold text-primary hover:underline touch-target"
             >
               <HelpCircle className="h-3.5 w-3.5" />
-              راهنمای انتخاب سایز پا
+              راهنمای سایز
             </button>
           </div>
 
-          <div className="flex flex-wrap gap-2">
+          <div className="grid grid-cols-4 sm:grid-cols-6 gap-2">
             {sizes.map((size) => {
               const isSelected = selectedSize === size;
               return (
@@ -109,13 +114,13 @@ export function VariantSelector({
                   type="button"
                   onClick={() => onSizeChange(size)}
                   className={cn(
-                    "min-w-12 h-10 rounded-xl px-3 py-2 text-xs font-bold font-mono border transition-all active:scale-95",
+                    "h-11 rounded-xl px-2 text-xs font-black font-mono border transition-all active:scale-90 flex items-center justify-center touch-target",
                     isSelected
                       ? "bg-primary text-primary-foreground border-primary shadow-md"
-                      : "bg-background text-foreground border-border hover:bg-muted"
+                      : "bg-card text-foreground border-border hover:bg-muted"
                   )}
                 >
-                  {size}
+                  EU {size}
                 </button>
               );
             })}
@@ -124,35 +129,35 @@ export function VariantSelector({
       )}
 
       {/* Stock Urgency & SKU Bar */}
-      <div className="flex items-center justify-between text-xs text-muted-foreground pt-1 border-t border-border/40">
+      <div className="flex items-center justify-between text-xs text-muted-foreground pt-2 border-t border-border/50">
         <div className="flex items-center gap-2">
           {stock <= 5 ? (
-            <span className="inline-flex items-center gap-1 font-bold text-amber-600 dark:text-amber-400 bg-amber-500/10 px-2.5 py-1 rounded-lg">
+            <span className="inline-flex items-center gap-1 font-bold text-amber-600 dark:text-amber-400 bg-amber-500/10 px-2.5 py-1 rounded-lg text-[11px]">
               <Flame className="h-3.5 w-3.5" />
-              فقط {stock} جفت موجود در انبار مرکزی
+              فقط {stock} جفت موجود در انبار
             </span>
           ) : (
-            <span className="text-emerald-600 dark:text-emerald-400 font-semibold">
-              ● آماده ارسال فوری به سراسر کشور
+            <span className="text-emerald-600 dark:text-emerald-400 font-semibold text-[11px] flex items-center gap-1">
+              <ShieldCheck className="h-3.5 w-3.5" /> موجود در انبار تهران با ارسال فوری
             </span>
           )}
         </div>
 
-        <span className="font-mono text-[11px]">شناسه نایک: {sku}</span>
+        <span className="font-mono text-[10px] sm:text-[11px]">کد مدل: {sku}</span>
       </div>
 
       {/* Size Guide Modal (Persian Foot Length & EU/US Table) */}
       <Dialog open={sizeGuideOpen} onOpenChange={setSizeGuideOpen} maxWidth="lg">
         <DialogHeader onClose={() => setSizeGuideOpen(false)}>
-          <DialogTitle>راهنمای سایز کتونی‌های نایک و ایر جردن</DialogTitle>
+          <DialogTitle>راهنمای جامع سایز کتونی‌های ایر جردن</DialogTitle>
         </DialogHeader>
 
-        <DialogContent className="p-6 space-y-4 text-xs text-right">
+        <DialogContent className="p-4 sm:p-6 space-y-4 text-xs text-right">
           <p className="text-muted-foreground leading-relaxed">
             کتونی‌های نایک ایر جردن ۱ و ۴ دارای قالب استاندارد (True to Size) هستند. اگر پاهای پهن‌تری دارید، پیشنهاد می‌شود نیم سایز بزرگتر انتخاب کنید.
           </p>
 
-          <div className="overflow-x-auto rounded-xl border border-border">
+          <div className="overflow-x-auto rounded-2xl border border-border">
             <table className="w-full text-center text-xs">
               <thead className="bg-muted/60 text-muted-foreground uppercase text-[10px] font-bold">
                 <tr>
@@ -175,17 +180,17 @@ export function VariantSelector({
           </div>
 
           <div className="rounded-xl bg-muted/40 p-3 text-[11px] text-muted-foreground space-y-1">
-            <strong className="text-foreground block">چگونه پای خود را اندازه بگیرید؟</strong>
+            <strong className="text-foreground block font-bold">نحوه اندازه‌گیری طول پا:</strong>
             <p>
-              پاشنه پای خود را به دیوار بچسبانید و با خط‌کش فاصله انتهای پاشنه تا نوک بلندترین انگشت شست را اندازه بگیرید.
+              پاشنه پای خود را به دیوار بچسبانید و با خط‌کش فاصله انتهای پاشنه تا نوک بلندترین انگشت را بر حسب سانتی‌متر بسنجید.
             </p>
           </div>
 
           <Button
             onClick={() => setSizeGuideOpen(false)}
-            className="w-full rounded-xl text-xs font-bold"
+            className="w-full rounded-2xl text-xs font-bold"
           >
-            متوجه شدم و سایزم را انتخاب کردم
+            سایزم را انتخاب کردم
           </Button>
         </DialogContent>
       </Dialog>

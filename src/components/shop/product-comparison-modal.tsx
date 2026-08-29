@@ -41,7 +41,7 @@ export function ProductComparisonModal() {
             initial={{ y: 80, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 80, opacity: 0 }}
-            className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 flex items-center gap-4 rounded-2xl border border-border/80 bg-background/95 p-3 shadow-2xl backdrop-blur-xl max-w-lg w-full mx-4 text-right"
+            className="fixed bottom-20 md:bottom-6 left-1/2 -translate-x-1/2 z-40 flex items-center gap-3 sm:gap-4 rounded-2xl border border-border/80 bg-background/95 p-3 shadow-2xl backdrop-blur-xl max-w-lg w-[calc(100%-2rem)] text-right"
           >
             <div className="flex items-center gap-2 overflow-x-auto">
               {items.map((product) => (

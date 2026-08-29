@@ -2,7 +2,6 @@
 
 import { BouncyAccordion, type BouncyAccordionItem } from "@/components/motion/bouncy-accordion";
 import { ShieldCheck, Truck, Sparkles, RefreshCcw, HelpCircle, Flame } from "lucide-react";
-import { TextShimmer } from "@/components/motion/text-shimmer";
 
 const FAQ_ITEMS: BouncyAccordionItem[] = [
   {

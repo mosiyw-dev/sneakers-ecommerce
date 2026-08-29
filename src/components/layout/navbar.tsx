@@ -16,10 +16,10 @@ import { useWishlistStore } from "@/stores/wishlist-store";
 import { useSearchStore } from "@/stores/search-store";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { CurrencySwitcher } from "./currency-switcher";
-import { MobileNav } from "./mobile-nav";
 import { Button } from "@/components/ui/button";
 import { SharedLayoutBg } from "@/components/motion/shared-layout-bg";
-import { LiquidGlassHeader } from "./liquid-glass-header";
+import { MobileNav } from "./mobile-nav";
+import { MobileHeader } from "./mobile-header";
 import { useIsMounted } from "@/hooks/use-is-mounted";
 import { cn } from "@/lib/utils";
 
@@ -57,8 +57,8 @@ export function Navbar() {
 
   return (
     <>
-      {/* Mobile Floating Liquid Glass Header */}
-      <LiquidGlassHeader onOpenMenu={() => setMobileMenuOpen(true)} />
+      {/* Mobile Context-Aware App Header */}
+      <MobileHeader onOpenMenu={() => setMobileMenuOpen(true)} />
 
       {/* Desktop Standard Navbar */}
       <header

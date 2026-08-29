@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, CheckCircle2, ShieldCheck, Award, Zap } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
 import { TiltCard } from "@/components/motion/tilt-card";
 import { AnimatedBadge } from "@/components/motion/animated-badge";
 import { AnimatedNumber } from "@/components/motion/animated-number";

@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 
 export function Footer() {
   return (
-    <footer className="border-t border-border bg-card/60 text-card-foreground">
+    <footer className="border-t border-border bg-card/60 text-card-foreground pb-safe">
       {/* Top Features / Trust Strip */}
       <div className="border-b border-border/80 bg-muted/30">
         <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">

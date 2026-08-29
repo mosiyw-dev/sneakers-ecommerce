@@ -64,10 +64,10 @@ export function ShippingStep({ initialAddress, onContinue }: ShippingStepProps) 
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 text-right">
+    <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6 text-right">
       <div className="flex items-center justify-between border-b border-border pb-4">
         <div>
-          <h2 className="text-xl sm:text-2xl font-bold text-foreground">
+          <h2 className="text-lg sm:text-2xl font-black text-foreground">
             اطلاعات تحویل‌گیرنده و آدرس
           </h2>
           <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
@@ -80,94 +80,107 @@ export function ShippingStep({ initialAddress, onContinue }: ShippingStepProps) 
           variant="outline"
           size="xs"
           onClick={handleDemoFill}
-          className="gap-1.5 rounded-xl text-xs"
+          className="gap-1.5 rounded-xl text-xs touch-target"
         >
-          <Sparkles className="h-3 w-3 text-amber-500" />
+          <Sparkles className="h-3.5 w-3.5 text-amber-500" />
           تکمیل خودکار (تست)
         </Button>
       </div>
 
       <div className="space-y-4">
         {/* First & Last name */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
           <div>
-            <label className="text-xs font-semibold text-foreground block mb-1">
+            <label className="text-xs font-bold text-foreground block mb-1">
               نام <span className="text-destructive">*</span>
             </label>
             <Input
               type="text"
+              name="given-name"
+              autoComplete="given-name"
               value={formData.firstName}
               onChange={(e) => handleChange("firstName", e.target.value)}
               placeholder="مثلاً علی"
               error={errors.firstName}
-              className="text-xs rounded-xl"
+              className="text-xs h-11 rounded-xl"
             />
           </div>
 
           <div>
-            <label className="text-xs font-semibold text-foreground block mb-1">
+            <label className="text-xs font-bold text-foreground block mb-1">
               نام خانوادگی <span className="text-destructive">*</span>
             </label>
             <Input
               type="text"
+              name="family-name"
+              autoComplete="family-name"
               value={formData.lastName}
               onChange={(e) => handleChange("lastName", e.target.value)}
               placeholder="مثلاً محمدی"
               error={errors.lastName}
-              className="text-xs rounded-xl"
+              className="text-xs h-11 rounded-xl"
             />
           </div>
         </div>
 
         {/* Email & Phone */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
           <div>
-            <label className="text-xs font-semibold text-foreground block mb-1">
+            <label className="text-xs font-bold text-foreground block mb-1">
               ایمیل جهت دریافت فاکتور <span className="text-destructive">*</span>
             </label>
             <Input
               type="email"
+              inputMode="email"
+              name="email"
+              autoComplete="email"
+              autoCapitalize="off"
               value={formData.email}
               onChange={(e) => handleChange("email", e.target.value)}
               placeholder="name@example.com"
               error={errors.email}
-              className="text-xs rounded-xl font-mono text-left"
+              className="text-xs h-11 rounded-xl font-mono text-left"
             />
           </div>
 
           <div>
-            <label className="text-xs font-semibold text-foreground block mb-1">
+            <label className="text-xs font-bold text-foreground block mb-1">
               شماره همراه (جهت هماهنگی پیک و پیامک رهگیری) <span className="text-destructive">*</span>
             </label>
             <Input
               type="tel"
+              inputMode="tel"
+              name="tel"
+              autoComplete="tel"
               value={formData.phone}
               onChange={(e) => handleChange("phone", e.target.value)}
               placeholder="09121234567"
               error={errors.phone}
-              className="text-xs rounded-xl font-mono text-left"
+              className="text-xs h-11 rounded-xl font-mono text-left"
             />
           </div>
         </div>
 
         {/* Street address */}
         <div>
-          <label className="text-xs font-semibold text-foreground block mb-1">
+          <label className="text-xs font-bold text-foreground block mb-1">
             آدرس دقیق پستی <span className="text-destructive">*</span>
           </label>
           <Input
             type="text"
+            name="street-address"
+            autoComplete="street-address"
             value={formData.street}
             onChange={(e) => handleChange("street", e.target.value)}
             placeholder="استان، شهر، خیابان اصلی، کوچه، پلاک"
             error={errors.street}
-            className="text-xs rounded-xl"
+            className="text-xs h-11 rounded-xl"
           />
         </div>
 
         {/* Apartment / Floor */}
         <div>
-          <label className="text-xs font-semibold text-foreground block mb-1">
+          <label className="text-xs font-bold text-foreground block mb-1">
             واحد، طبقه یا توضیحات زنگ (اختیاری)
           </label>
           <Input
@@ -175,51 +188,56 @@ export function ShippingStep({ initialAddress, onContinue }: ShippingStepProps) 
             value={formData.apartment || ""}
             onChange={(e) => handleChange("apartment", e.target.value)}
             placeholder="مثلاً واحد ۴، طبقه دوم"
-            className="text-xs rounded-xl"
+            className="text-xs h-11 rounded-xl"
           />
         </div>
 
         {/* City & State & Postal code */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4">
           <div>
-            <label className="text-xs font-semibold text-foreground block mb-1">
+            <label className="text-xs font-bold text-foreground block mb-1">
               استان <span className="text-destructive">*</span>
             </label>
             <Input
               type="text"
+              name="address-level1"
               value={formData.state}
               onChange={(e) => handleChange("state", e.target.value)}
               placeholder="مثلاً تهران"
-              className="text-xs rounded-xl"
+              className="text-xs h-11 rounded-xl"
             />
           </div>
 
           <div>
-            <label className="text-xs font-semibold text-foreground block mb-1">
+            <label className="text-xs font-bold text-foreground block mb-1">
               شهر <span className="text-destructive">*</span>
             </label>
             <Input
               type="text"
+              name="address-level2"
               value={formData.city}
               onChange={(e) => handleChange("city", e.target.value)}
               placeholder="مثلاً تهران"
               error={errors.city}
-              className="text-xs rounded-xl"
+              className="text-xs h-11 rounded-xl"
             />
           </div>
 
           <div>
-            <label className="text-xs font-semibold text-foreground block mb-1">
+            <label className="text-xs font-bold text-foreground block mb-1">
               کد پستی ۱۰ رقمی <span className="text-destructive">*</span>
             </label>
             <Input
               type="text"
+              inputMode="numeric"
+              name="postal-code"
+              autoComplete="postal-code"
               value={formData.postalCode}
               onChange={(e) => handleChange("postalCode", e.target.value)}
               placeholder="1234567890"
               maxLength={10}
               error={errors.postalCode}
-              className="text-xs rounded-xl font-mono text-left"
+              className="text-xs h-11 rounded-xl font-mono text-left"
             />
           </div>
         </div>
@@ -229,7 +247,7 @@ export function ShippingStep({ initialAddress, onContinue }: ShippingStepProps) 
         <Button
           type="submit"
           size="lg"
-          className="gap-2 rounded-2xl text-xs sm:text-sm font-bold shadow-md active:scale-95"
+          className="w-full sm:w-auto h-12 gap-2 rounded-2xl text-xs sm:text-sm font-black shadow-md active:scale-95 touch-target"
         >
           مرحله بعد: انتخاب شیوه ارسال <ArrowLeft className="h-4 w-4" />
         </Button>

@@ -32,7 +32,7 @@ function QuickViewModalContent({
   onClose: () => void;
 }) {
   const isMounted = useIsMounted();
-  const { addItem } = useCartStore();
+  const { addItem, openDrawer } = useCartStore();
   const { toggleWishlist, isInWishlist } = useWishlistStore();
   const { format } = useCurrencyStore();
 
@@ -58,6 +58,7 @@ function QuickViewModalContent({
       `${product.name} (سایز EU ${selectedSize || "استاندارد"}) به سبد افزوده شد.`
     );
     onClose();
+    openDrawer();
   };
 
   const handleToggleWishlist = () => {
@@ -70,9 +71,9 @@ function QuickViewModalContent({
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 text-right">
+    <div className="grid grid-cols-1 md:grid-cols-2 text-right max-h-[85vh] overflow-y-auto">
       {/* Gallery side */}
-      <div className="flex flex-col bg-muted/40 p-6 border-b md:border-b-0 md:border-l border-border">
+      <div className="flex flex-col bg-muted/40 p-4 sm:p-6 border-b md:border-b-0 md:border-l border-border">
         <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-muted border border-border/50">
           <Image
             src={product.images[activeImageIndex]?.url || product.images[0].url}
@@ -91,13 +92,14 @@ function QuickViewModalContent({
 
         {/* Thumbnails */}
         {product.images.length > 1 && (
-          <div className="flex gap-2.5 mt-4 overflow-x-auto pb-1">
+          <div className="flex gap-2 mt-3 overflow-x-auto pb-1 scrollbar-none">
             {product.images.map((img, idx) => (
               <button
                 key={img.id}
+                type="button"
                 onClick={() => setActiveImageIndex(idx)}
                 className={cn(
-                  "relative h-14 w-14 shrink-0 overflow-hidden rounded-lg border-2 transition-all",
+                  "relative h-12 w-12 sm:h-14 sm:w-14 shrink-0 overflow-hidden rounded-xl border-2 transition-all touch-target",
                   activeImageIndex === idx
                     ? "border-primary shadow-xs ring-2 ring-primary/20"
                     : "border-transparent opacity-70 hover:opacity-100"
@@ -117,62 +119,60 @@ function QuickViewModalContent({
       </div>
 
       {/* Details & Actions side */}
-      <div className="flex flex-col justify-between p-6 sm:p-8">
-        <div>
+      <div className="flex flex-col justify-between p-4 sm:p-8">
+        <div className="space-y-4">
           {/* Category & Rating */}
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+          <div className="flex items-center justify-between">
+            <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-muted-foreground">
               {product.brand} • {product.categoryName}
             </span>
-            <div className="flex items-center gap-1 text-xs font-semibold text-amber-500">
+            <div className="flex items-center gap-1 text-xs font-bold text-amber-500">
               <Star className="h-3.5 w-3.5 fill-current" />
               <span>{product.rating.toFixed(1)}</span>
-              <span className="text-muted-foreground font-normal">
-                ({product.reviewCount} نظر)
+              <span className="text-muted-foreground font-normal text-[10px]">
+                ({product.reviewCount})
               </span>
             </div>
           </div>
 
           {/* Title & Tagline */}
-          <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
-            {product.name}
-          </h2>
-          <p className="text-xs sm:text-sm text-muted-foreground mt-1 line-clamp-2">
-            {product.description}
-          </p>
+          <div>
+            <h2 className="text-lg sm:text-2xl font-black tracking-tight text-foreground leading-tight">
+              {product.name}
+            </h2>
+            <p className="text-xs text-muted-foreground mt-1 line-clamp-2 leading-relaxed">
+              {product.description}
+            </p>
+          </div>
 
           {/* Price */}
-          <div className="flex items-baseline gap-3 mt-4">
-            <span className="text-2xl font-bold text-foreground font-mono">
+          <div className="flex items-baseline gap-2.5">
+            <span className="text-xl sm:text-2xl font-black text-foreground font-mono">
               {format(product.price)}
             </span>
             {product.compareAtPrice && (
-              <span className="text-sm text-muted-foreground line-through font-mono">
+              <span className="text-xs text-muted-foreground line-through font-mono">
                 {format(product.compareAtPrice)}
               </span>
             )}
             {product.stock <= 5 && (
-              <span className="text-xs font-medium text-amber-600 dark:text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-full">
-                🔥 فقط {product.stock} جفت در انبار باقی مانده
+              <span className="text-[10px] font-bold text-amber-600 dark:text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-md">
+                فقط {product.stock} جفت موجود
               </span>
             )}
           </div>
 
           {/* Color swatches */}
           {product.colors && product.colors.length > 0 && (
-            <div className="mt-5">
-              <div className="flex justify-between text-xs mb-2">
-                <span className="font-medium text-foreground">
-                  رنگ‌بندی:{" "}
-                  <strong className="font-semibold text-primary">
-                    {selectedColor?.name}
-                  </strong>
-                </span>
-              </div>
-              <div className="flex gap-2.5">
+            <div className="space-y-1.5">
+              <span className="text-xs font-bold text-foreground block">
+                رنگ: <strong className="text-primary">{selectedColor?.name}</strong>
+              </span>
+              <div className="flex gap-2">
                 {product.colors.map((color) => (
                   <button
                     key={color.name}
+                    type="button"
                     onClick={() => {
                       setSelectedColor(color);
                       if (color.imageIndex !== undefined && product.images[color.imageIndex]) {
@@ -180,7 +180,7 @@ function QuickViewModalContent({
                       }
                     }}
                     className={cn(
-                      "relative h-7 w-7 rounded-full border-2 transition-all p-0.5 flex items-center justify-center",
+                      "relative h-7 w-7 rounded-full border-2 transition-all p-0.5 flex items-center justify-center touch-target",
                       selectedColor?.name === color.name
                         ? "border-primary ring-2 ring-primary/20 scale-110"
                         : "border-border hover:scale-105"
@@ -206,24 +206,20 @@ function QuickViewModalContent({
 
           {/* Sizes */}
           {product.sizes && product.sizes.length > 0 && (
-            <div className="mt-5">
-              <div className="flex justify-between text-xs mb-2">
-                <span className="font-medium text-foreground">
-                  انتخاب سایز کتونی (EU):{" "}
-                  <strong className="font-semibold text-primary">
-                    {selectedSize}
-                  </strong>
-                </span>
-              </div>
-              <div className="flex flex-wrap gap-2">
+            <div className="space-y-1.5">
+              <span className="text-xs font-bold text-foreground block">
+                سایز کتونی: <strong className="font-mono text-primary font-black">EU {selectedSize}</strong>
+              </span>
+              <div className="flex flex-wrap gap-1.5 font-mono">
                 {product.sizes.map((size) => (
                   <button
                     key={size}
+                    type="button"
                     onClick={() => setSelectedSize(size)}
                     className={cn(
-                      "rounded-lg px-3 py-1.5 text-xs font-semibold border transition-all font-mono",
+                      "h-10 min-w-10 rounded-xl px-2.5 text-xs font-bold border transition-all touch-target active:scale-95",
                       selectedSize === size
-                        ? "bg-primary text-primary-foreground border-primary"
+                        ? "bg-primary text-primary-foreground border-primary shadow-xs"
                         : "bg-background text-foreground border-border hover:bg-muted"
                     )}
                   >
@@ -237,11 +233,11 @@ function QuickViewModalContent({
 
         {/* Action buttons */}
         <div className="mt-6 pt-4 border-t border-border space-y-3">
-          <div className="flex gap-3">
+          <div className="flex gap-2 sm:gap-3">
             <Button
               onClick={handleAddToCart}
               size="lg"
-              className="flex-1 gap-2 rounded-xl text-sm font-semibold shadow-md active:scale-95"
+              className="flex-1 h-11 gap-2 rounded-2xl text-xs sm:text-sm font-black shadow-md active:scale-95 touch-target"
             >
               <ShoppingBag className="h-4 w-4" /> افزودن به سبد خرید
             </Button>
@@ -249,28 +245,28 @@ function QuickViewModalContent({
               variant="outline"
               size="icon"
               onClick={handleToggleWishlist}
-              className="h-11 w-11 rounded-xl shrink-0"
+              className="h-11 w-11 rounded-2xl shrink-0 touch-target"
               aria-label="ذخیره در علاقه‌مندی‌ها"
             >
               <Heart
                 className={cn(
                   "h-4 w-4 transition-colors",
-                  isFavorited && "fill-destructive text-destructive"
+                  isFavorited && "fill-rose-500 text-rose-500"
                 )}
               />
             </Button>
           </div>
 
-          <div className="flex items-center justify-between text-xs text-muted-foreground pt-1">
+          <div className="flex items-center justify-between text-[11px] text-muted-foreground pt-1">
             <span className="flex items-center gap-1">
-              <Truck className="h-3.5 w-3.5 text-primary" /> ارسال فوری با ضمانت اصالت
+              <Truck className="h-3.5 w-3.5 text-primary" /> ارسال فوری و اصالت ۱۰۰٪
             </span>
             <Link
               href={`/products/${product.slug}`}
               onClick={onClose}
-              className="inline-flex items-center gap-1 font-semibold text-primary hover:underline"
+              className="inline-flex items-center gap-1 font-bold text-primary hover:underline"
             >
-              مشاهده مشخصات کامل <ArrowLeft className="h-3 w-3" />
+              صفحه کامل محصول <ArrowLeft className="h-3 w-3" />
             </Link>
           </div>
         </div>
